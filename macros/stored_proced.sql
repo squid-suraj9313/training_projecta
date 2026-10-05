@@ -1,5 +1,4 @@
 {% macro suraj_stored_procedure() %}
- 
     {% set sql %}
         CREATE OR REPLACE PROCEDURE `{{ target.project }}.{{ target.dataset }}.update_host_name`
         (p_host_id INT64, p_host_name STRING)

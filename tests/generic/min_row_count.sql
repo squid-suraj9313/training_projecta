@@ -5,4 +5,4 @@
     {{model}}
     having count(*) < {{min_row_count}}
 
-{ %endtest %}
+{% endtest %}

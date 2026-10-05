@@ -8,7 +8,7 @@
         updated_at='updated_at'
     )
 }}
- 
+
 SELECT
     host_id,
     host_name,

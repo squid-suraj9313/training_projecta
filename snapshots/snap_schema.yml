@@ -1,6 +1,6 @@
 snapshots:
  
-  - name: snap_host
+  - name: snap_hosts
     description: "This is snapshot for the src_hosts"
     config: 
       unique_key: 'host_id'
@@ -9,7 +9,7 @@ snapshots:
       hard_deletes: 'ignore'
 
  
-  - name: snap_host2
+  - name: snap_hosts2
     description: "This is snapshot2 for the src_hosts"
     config: 
       unique_key: 'host_id'
@@ -17,7 +17,7 @@ snapshots:
       updated_at: 'updated_at'
       hard_deletes: 'invalidate'
  
-  - name: snap_host3
+  - name: snap_hosts3
     description: "This is snapshot3 for the src_hosts"
     config: 
       unique_key: 'host_id'
@@ -33,7 +33,7 @@ snapshots:
       dbt_valid_to_current: "timestamp('9999-12-31 00:00:00 UTC')"
       hard_deletes: 'invalidate'
  
-  - name: snap_host5
+  - name: snap_hosts5
     description: "This is snapshot5 for the src_hosts"
     config: 
       unique_key: 'host_id'
@@ -42,16 +42,3 @@ snapshots:
       dbt_valid_to_current: "timestamp('9999-12-31 00:00:00 UTC')"
       hard_deletes: 'new_record'
  
-  - name: snap_host6
-    description: "This is snapshot6 for the src_hosts"
-    config: 
-      unique_key: 'host_id'
-      strategy: 'check'
-      check_cols: 'all'
-      dbt_valid_to_current: "timestamp('9999-12-31 00:00:00 UTC')"
-      hard_deletes: 'new_record'
-      snapshot_meta_column_names: 
-        dbt_valid_from: 'effective_date'
-        dbt_valid_to: 'expiration_date'
-        dbt_scd_id: 'scd_id'
-        dbt_is_deleted: 'is_deleted'

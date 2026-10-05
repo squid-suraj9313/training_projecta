@@ -31,7 +31,7 @@ created_at,
 
 updated_at,
 
-{{age('created_at')}} as host_age;
+{{age('created_at')}} as host_age
 
 from
 

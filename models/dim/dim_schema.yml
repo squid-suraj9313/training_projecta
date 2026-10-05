@@ -1,0 +1,91 @@
+
+models:
+  - name: dim_host_cleansed
+    description: "This table derives data from source src hosts."
+    tests:
+      - minimum_row_count:
+          min_row_count : 100
+    columns: 
+      - name: host_id
+        description: "This represents the host id."
+        tests:
+          - dbt_utils.not_null_proportion:
+              arguments:
+                at_least: 0.95
+          - suraj_positive_values
+          - unique
+          - not_null
+          - relationships:  
+              to: "{{ ref('src_hosts') }}"
+              field: host_id
+
+      - name: host_name
+        description: "This represents the host name."
+        tests: 
+          - unique 
+          - not_null
+
+      - name: is_superhost
+        description: "This represents if the host is a superhost."
+        tests: 
+          - not_null
+          - accepted_values: 
+              values: [true, false] 
+              quote: false
+
+      - name: created_at
+        tests: 
+          - not_null
+
+      - name: updated_at
+        tests: 
+          - not_null
+
+  - name: dim_listings_cleansed
+    description: "Cleansed listings dimensional table partitioned by created_at."
+    columns:
+      - name: listing_id
+        description: "Primary key for the listing."
+        tests:
+          - unique
+          - not_null
+
+      - name: listing_url
+        description: "Direct URL link to the listing."
+
+      - name: listing_name
+        description: "Display name/title of the listing."
+
+      - name: room_type
+        description: "Type of accommodation offered."
+        tests:
+          - not_null
+          - accepted_values:
+              values:
+                - 'Entire home/apt'
+                - 'Private room'
+                - 'Shared room'
+                - 'Hotel room'
+
+      - name: minimum_nights
+        description: "Minimum nights required for booking (defaults to 1 if originally 0)."
+        tests:
+          - not_null
+
+      - name: host_id
+        description: "Foreign key referencing the host."
+        tests:
+          - not_null
+          - relationships:
+              to: ref('src_hosts')
+              field: host_id
+
+      - name: price_str
+        description: "Raw price formatted as a string."
+
+      - name: created_at
+        description: "Timestamp when the listing record was created (partitioning key)."
+
+      - name: updated_at
+        description: "Timestamp when the listing record was last updated."
+

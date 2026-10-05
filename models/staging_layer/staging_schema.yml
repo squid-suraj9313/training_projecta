@@ -1,0 +1,77 @@
+models:
+  - name: src_hosts
+    description: "{{ doc('model1') }}"
+    config:
+      pre_hook:
+        - "{{audit_start()}}"
+      
+      post_hook:
+        - "{{audit_end()}}"
+    columns:
+      - name: host_id
+        description: "This represents the host id."
+        tests:
+          - unique
+          - not_null
+
+      - name: host_name
+        description: "This represents the host name."
+        tests:
+          - not_null
+
+      - name: is_superhost
+        description: "This represents if the host is a superhost."
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['t', 'f']
+
+      - name: created_at
+        description: "Timestamp when the host record was created."
+
+      - name: updated_at
+        description: "Timestamp when the host record was last updated."
+
+  - name: src_listings
+    description: "{{ doc('model2') }}"
+    columns:
+      - name: listing_id
+        description: "This represents the listing id."
+        tests:
+          - unique
+          - not_null
+
+      - name: listing_url
+        description: "This represents the listing url."
+        tests:
+          - not_null
+
+      - name: listing_name
+        description: "This represents the listing name."
+
+      - name: created_at
+        description: "Timestamp when the listing record was created."
+
+      - name: updated_at
+        description: "Timestamp when the listing record was last updated."
+
+  - name: src_reviews
+    description: "{{ doc('model3') }}"
+    columns:
+      - name: listing_id
+        description: "This represents the listing id."
+        tests:
+          - not_null
+          - relationships:
+              to: ref('src_listings')
+              field: listing_id
+
+      - name: review_date
+        description: "This represents the review date."
+        tests:
+          - not_null
+
+      - name: reviewer_name
+        description: "This represents the reviewer name."
+        tests:
+          - not_null

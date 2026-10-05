@@ -1,0 +1,63 @@
+# Name your project! Project names should contain only lowercase characters
+# and underscores. A good package name should reflect your organization's
+# name or the intended use of these models
+name: 'training'
+version: '1.0.0'
+
+# This setting configures which "profile" dbt uses for this project.
+profile: 'training'
+
+# These configurations specify where dbt should look for different types of files.
+model-paths: ["models"]
+analysis-paths: ["analyses"]
+test-paths: ["tests"]
+seed-paths: ["seeds"]
+macro-paths: ["macros"]
+snapshot-paths: ["snapshots"]
+
+clean-targets:         # directories to be removed by `dbt clean`
+  - "target"
+  - "dbt_packages"
+
+
+on-run-start:
+  - insert into tredence_suraj.sample_id values(1000)
+
+on-run-end:
+  - insert into tredence_suraj.sample_id values(2000)
+
+# Configuring models
+models:
+  training:
+
+    # +pre_hook:
+    #   - insert into tredence_suraj.sample_id values(0)
+
+
+    # +post_hook:
+    #   - insert into tredence_suraj.sample_id values(0)
+    
+    staging_layer:
+      +materialized: view  # Changed 'views' to 'view' (dbt standard is singular)
+    dim:
+      +materialized: table
+    
+    mv:
+      +materialized: materialized_view
+      +enable_refresh: true 
+      +refresh_interval_minutes : 30
+
+# Clean seeds configuration in dbt_project.yml
+seeds:
+  training:
+    +schema: training_seeds  # Optional: defines target schema for seeds
+
+snapshots:
+  training:
+    +schema: tredence_suraj
+    +hard_deletes: "ignore"
+    +enabled: true     
+
+vars:
+  new_date : '2011-01-01'
+  my_new_var: "{{env_var(AIRBNB_START_DATE)}}"
